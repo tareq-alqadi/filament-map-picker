@@ -1,0 +1,9 @@
+/* @import '../../vendor/filament/filament/resources/css/theme.css'; */
+@import "../../node_modules/leaflet/dist/leaflet.css";
+@import "../../node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css";
+@import "../../node_modules/leaflet-control-geocoder/dist/Control.Geocoder.css";
+/* @import "../../node_modules/leaflet-draw/dist/leaflet.draw-src.css"; */
+
+.map-icon {
+    stroke: #dbeafe;
+}
