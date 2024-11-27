@@ -9,6 +9,7 @@
 
     <x-filament::input.wrapper :disabled="$isDisabled" :valid="!$errors->has($statePath)" class="fi-fo-map" :attributes="\Filament\Support\prepare_inherited_attributes($getExtraAttributeBag())->class(['overflow-hidden'])">
         <div x-data="mapPicker({
+            id: @js($id),
             state: $wire.{{ $applyStateBindingModifiers("entangle('{$getStatePath()}')") }},
             config: @js($config),
             toolbarButtons: @js($getToolbarButtons()),
@@ -19,7 +20,8 @@
                 ]"
             ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('map-picker-component', package: \TareqAlqadi\FilamentMapPicker\FilamentMapPicker::getPackageName()) }}">
 
-            <div x-ref="map" class="w-full" style="min-height: 500px; z-index: 1 !important;"></div>
+            <div x-ref="map-{{ $id }}" class="w-full border-2 dark:border-gray-800 rounded-lg"
+                style="height: {{ $config['height'] }}px; z-index: 1 !important;"></div>
 
         </div>
 

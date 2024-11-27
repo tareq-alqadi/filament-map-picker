@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace TareqAlqadi\FilamentMapPicker\Fields;
+namespace TareqAlqadi\FilamentMapPicker\Columns;
+
 
 use Closure;
 use Filament\Forms\Components\Concerns\InteractsWithToolbarButtons;
-use Filament\Forms\Components\Field;
-use Filament\Forms\Concerns\HasStateBindingModifiers;
+use Filament\Tables\Columns\Column;
 use TareqAlqadi\FilamentMapPicker\Contracts\MapOptions;
 
-class Map extends Field
+class MapColumn extends Column
 {
-    use HasStateBindingModifiers;
     use InteractsWithToolbarButtons;
 
     /**
      * Field view
+     * @var string
      */
-    public string $view = 'map-picker::fields.map-picker';
+    public string $view = 'map-picker::columns.map-column';
 
     protected bool|Closure $hasMarkerCircle = false;
 
@@ -40,8 +40,8 @@ class Map extends Field
         'markerCircleColor' => '#43ff64',
         'followMarker' => false,
         'draggableMarker' => true,
+        'interactiveMarker' => false,
         'height' => 500,
-
     ];
 
     /**
@@ -199,6 +199,18 @@ class Map extends Field
     public function draggableMarker(bool $draggableMarker = true): self
     {
         $this->mapConfig['draggableMarker'] = $draggableMarker;
+
+        return $this;
+    }
+
+    /**
+     * Enable or disable interactive marker on the map.
+     *
+     * @return $this
+     */
+    public function interactiveMarker(bool $interactiveMarker = false): self
+    {
+        $this->mapConfig['interactiveMarker'] = $interactiveMarker;
 
         return $this;
     }

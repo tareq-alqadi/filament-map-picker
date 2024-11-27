@@ -5,12 +5,15 @@ import "leaflet-control-geocoder";
 // import "leaflet-editable";
 
 export default function mapPicker({
+    id,
     state,
     config,
     hasMarkerCircle,
     toolbarButtons,
 }) {
     return {
+        id,
+
         state,
 
         config,
@@ -35,12 +38,13 @@ export default function mapPicker({
                 radius: this.state.radius ?? 0,
             };
 
-            this.attach(this.$refs.map);
+            setTimeout(() => {
+                this.createMap(this.$refs[`map-${this.id}`]);
+            }, 500);
 
             this.$watch("state", () => {
                 this.setLocation(this.state.lat, this.state.lng);
             });
-
         },
 
         setLocation: function (lat, lng) {
@@ -156,11 +160,15 @@ export default function mapPicker({
         },
 
         setupEventListeners: function () {
-            this.map.on("load", () => {
+
+            this.map.whenReady(() => {
                 if (this.config.showMarker) {
                     this.marker.setLatLng(this.map.getCenter());
                 }
-                this.map.invalidateSize(true);
+
+                setTimeout(() => {
+                    this.map.invalidateSize();
+                }, 1000);
             });
 
             this.map.on('drag', () => {
@@ -169,19 +177,21 @@ export default function mapPicker({
                 this.map.panInsideBounds(bounds, { animate: false });
             });
 
-            this.map.on("click", (e) => {
-                this.marker.setLatLng(e.latlng);
-                this.drawCircleAroundMarker();
+            if (this.config.interactiveMarker) {
+                this.map.on("click", (e) => {
+                    this.marker.setLatLng(e.latlng);
+                    this.drawCircleAroundMarker();
 
-                if (this.config.followMarker) {
-                    this.map.setView(new L.LatLng(e.latlng.lat, e.latlng.lng));
-                }
+                    if (this.config.followMarker) {
+                        this.map.setView(new L.LatLng(e.latlng.lat, e.latlng.lng));
+                    }
 
-                this.setState({
-                    lat: e.latlng.lat,
-                    lng: e.latlng.lng,
+                    this.setState({
+                        lat: e.latlng.lat,
+                        lng: e.latlng.lng,
+                    });
                 });
-            });
+            }
         },
 
         addTileLayer: function () {
@@ -198,9 +208,11 @@ export default function mapPicker({
         addMarker: function () {
             if (this.config.showMarker) {
                 const svgIcon = this.createSvgIcon(this.config.markerColor);
+
                 this.marker = L.marker([0, 0], {
                     icon: svgIcon,
                     draggable: this.config.draggableMarker,
+                    interactive: this.config.interactiveMarker,
                     autoPan: true,
                 })
                     .addTo(this.map)
@@ -294,8 +306,5 @@ export default function mapPicker({
             };
         },
 
-        attach: function (el) {
-            this.createMap(el);
-        },
     };
 }
