@@ -38,6 +38,7 @@ class Map extends Field
         'zoom' => 15,
         'markerColor' => '#3b82f6',
         'markerCircleColor' => '#43ff64',
+        'interactiveMarker' => true,
         'followMarker' => false,
         'draggableMarker' => true,
         'height' => 500,
