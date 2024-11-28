@@ -91,7 +91,7 @@ class MapColumn extends Column
         return $this;
     }
 
-        /**
+    /**
      * Set default height
      *
      * @return MapOptions
@@ -264,6 +264,5 @@ class MapColumn extends Column
     protected function setUp(): void
     {
         parent::setUp();
-        $this->default(['lat' => 0, 'lng' => 0, 'radius' => $this->getMarkerCircleRadius()]);
     }
 }

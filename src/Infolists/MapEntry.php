@@ -264,6 +264,5 @@ class MapEntry extends Entry
     protected function setUp(): void
     {
         parent::setUp();
-        $this->default(['lat' => 0, 'lng' => 0, 'radius' => $this->getMarkerCircleRadius()]);
     }
 }
