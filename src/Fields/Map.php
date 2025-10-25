@@ -7,12 +7,10 @@ namespace TareqAlqadi\FilamentMapPicker\Fields;
 use Closure;
 use Filament\Forms\Components\Concerns\InteractsWithToolbarButtons;
 use Filament\Forms\Components\Field;
-use Filament\Forms\Concerns\HasStateBindingModifiers;
 use TareqAlqadi\FilamentMapPicker\Contracts\MapOptions;
 
 class Map extends Field
 {
-    use HasStateBindingModifiers;
     use InteractsWithToolbarButtons;
 
     /**
