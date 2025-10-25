@@ -31,7 +31,7 @@
                 ]"
             x-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('map-picker-component', package: \TareqAlqadi\FilamentMapPicker\FilamentMapPicker::getPackageName()) }}">
 
-            <div x-ref="map-{{ $id }}" class="w-full border-2 border-gray-950/10 dark:border-gray-800 rounded-2xl"
+            <div x-ref="map-{{ $id }}" class="w-full"
                 style="height: {{ $config['height'] }}px; z-index: 1 !important;"></div>
 
         </div>
