@@ -7,7 +7,10 @@ namespace TareqAlqadi\FilamentMapPicker\Columns;
 
 use Closure;
 use Filament\Forms\Components\Concerns\InteractsWithToolbarButtons;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables\Columns\Column;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Js;
 use TareqAlqadi\FilamentMapPicker\Contracts\MapOptions;
 
 class MapColumn extends Column
@@ -56,12 +59,6 @@ class MapColumn extends Column
         'zoom' => 15,
     ];
 
-    protected array|Closure $toolbarButtons = [
-        'zoomControl',
-        'fullScreen',
-        'search',
-    ];
-
     /**
      * Extra leaflet controls variables
      */
@@ -77,6 +74,19 @@ class MapColumn extends Column
         ]);
     }
 
+    /**
+     * Get default toolbar buttons
+     *
+     * @return array
+     */
+    public function getDefaultToolbarButtons(): array
+    {
+        return [
+            'zoomControl',
+            'fullScreen',
+            'search',
+        ];
+    }
     /**
      * Set default zoom
      *
@@ -258,11 +268,50 @@ class MapColumn extends Column
         return $this->evaluate($this->markerCircleRadius) ?? 100;
     }
 
-    /**
-     * Setup function
-     */
-    protected function setUp(): void
+    public function toHtml(): string
     {
-        parent::setUp();
+        $state = $this->getState();
+        
+        $attributes = $this->getExtraAttributeBag()
+            ->class([
+                'fi-ta-text',
+                'fi-inline' => $this->isInline(),
+            ]);
+
+        $alignment = $this->getAlignment();
+
+        $attributes = $attributes
+            ->class([
+                ($alignment instanceof Alignment) ? "fi-align-{$alignment->value}" : (is_string($alignment) ? $alignment : ''),
+            ]);
+
+        if (blank($state)) {
+            $attributes = $attributes
+                ->merge([
+                    'x-tooltip' => filled($tooltip = $this->getEmptyTooltip())
+                        ? '{
+                            content: ' . Js::from($tooltip) . ',
+                            theme: $store.theme,
+                            allowHTML: ' . Js::from($tooltip instanceof Htmlable) . ',
+                        }'
+                        : null,
+                ], escape: false);
+
+            $placeholder = $this->getPlaceholder();
+
+            ob_start(); ?>
+
+            <div <?= $attributes->toHtml() ?>>
+                <?php if (filled($placeholder)) { ?>
+                    <p class="fi-ta-placeholder">
+                        <?= e($placeholder) ?>
+                    </p>
+                <?php } ?>
+            </div>
+
+            <?php return ob_get_clean();
+        }
+        
+        return parent::toHtml();
     }
 }

@@ -57,12 +57,6 @@ class Map extends Field
         'zoom' => 15,
     ];
 
-    protected array|Closure $toolbarButtons = [
-        'zoomControl',
-        'fullScreen',
-        'search',
-    ];
-
     /**
      * Extra leaflet controls variables
      */
@@ -79,6 +73,20 @@ class Map extends Field
     }
 
     /**
+     * Get default toolbar buttons
+     *
+     * @return array
+     */
+    public function getDefaultToolbarButtons(): array
+    {
+        return [
+            'zoomControl',
+            'fullScreen',
+            'search',
+        ];
+    }
+
+    /**
      * Set default zoom
      *
      * @return MapOptions
@@ -92,7 +100,7 @@ class Map extends Field
         return $this;
     }
 
-        /**
+    /**
      * Set default height
      *
      * @return MapOptions
