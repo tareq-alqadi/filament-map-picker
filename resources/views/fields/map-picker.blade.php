@@ -18,7 +18,7 @@
         <div
             x-data="mapPicker({
                     id: @js($id),
-                    state: $wire.{{ $applyStateBindingModifiers("entangle('{$getStatePath()}')") }},
+                    state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$getStatePath()}')") }},
                     config: @js($config),
                     toolbarButtons: @js($getToolbarButtons()),
                     hasMarkerCircle: @js($hasMarkerCircle()),
